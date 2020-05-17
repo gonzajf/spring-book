@@ -5,9 +5,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.twitter.api.SearchParameters;
-import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.stereotype.Service;
+
+import com.gonzajf.spring.masteringSpring.model.LightTweet;
 
 @Service
 public class SearchService {
@@ -15,18 +16,18 @@ public class SearchService {
 	@Autowired
 	private Twitter twitter;
 
-	public List<Tweet> search(String searchType, List<String> keywords) {
+	public List<LightTweet> search(String searchType, List<String> keywords) {
 		List<SearchParameters> searches = keywords
 											.stream()
 											.map(taste -> createSearchParam(searchType, taste))
 											.collect(Collectors.toList());
 		
-		List<Tweet> results = searches
+		List<LightTweet> results = searches
 								.stream()
 								.map(params -> twitter.searchOperations().search(params))
-								.flatMap(searchResults -> searchResults.getTweets()
-																		.stream())
-																		.collect(Collectors.toList());
+								.flatMap(searchResults -> searchResults.getTweets().stream())
+								.map(LightTweet::ofTweet)
+								.collect(Collectors.toList());
 		return results;
 	}
 
