@@ -2,32 +2,32 @@ package com.gonzajf.spring.masteringSpring.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 @Configuration
-@EnableGlobalMethodSecurity(securedEnabled = true)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+@Order(1)
+public class ApiSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configureAuth(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication()
-			.withUser("user").password("user").roles("USER")
+			.withUser("user").password("{noop}user").roles("USER")
 			.and()
-			.withUser("admin").password("admin").roles("USER", "ADMIN");
+			.withUser("admin").password("{noop}admin").roles("USER", "ADMIN");
 	}
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
-		http.httpBasic()
+		http.antMatcher("/api/**")
+			.httpBasic()
 			.and()
 			.csrf().disable()
 			.authorizeRequests()
-			.antMatchers("/login", "/logout").permitAll()
 			.antMatchers(HttpMethod.GET, "/api/**").hasRole("USER")
 			.antMatchers(HttpMethod.POST, "/api/**").hasRole("ADMIN")
 			.antMatchers(HttpMethod.PUT, "/api/**").hasRole("ADMIN")
