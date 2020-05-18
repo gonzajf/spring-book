@@ -11,6 +11,13 @@ public class User {
 	private LocalDate birthDate;
 	private List<String> tastes = new ArrayList<>();
 	
+	public User() {
+	}
+
+	public User(String mail) {
+		email = mail;
+	}
+	
 	public String getTwitterHandle() {
 		return twitterHandle;
 	}
