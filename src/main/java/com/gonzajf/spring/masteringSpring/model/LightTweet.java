@@ -8,7 +8,7 @@ import org.springframework.social.twitter.api.Tweet;
 import org.springframework.social.twitter.api.TwitterProfile;
 
 public class LightTweet {
-
+	
 	private String profileImageUrl;
 	private String user;
 	private String text;
@@ -74,5 +74,11 @@ public class LightTweet {
 	}
 	public void setRetweetCount(Integer retweetCount) {
 		this.retweetCount = retweetCount;
+	}
+	
+	@Override
+	public String toString() {
+		return "LightTweet [profileImageUrl=" + profileImageUrl + ", user=" + user + ", text=" + text + ", date=" + date
+				+ ", lang=" + lang + ", retweetCount=" + retweetCount + "]";
 	}
 }

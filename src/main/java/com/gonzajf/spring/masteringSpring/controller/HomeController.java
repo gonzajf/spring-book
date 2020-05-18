@@ -11,9 +11,13 @@ import com.gonzajf.spring.masteringSpring.form.UserProfileSession;
 @Controller
 public class HomeController {
 
-	@Autowired
 	private UserProfileSession profileSession;
 
+	@Autowired
+	public HomeController() {
+		profileSession = new UserProfileSession();
+	}
+	
 	@RequestMapping("/")
 	public String home() {
 		
